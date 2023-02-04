@@ -1,8 +1,4 @@
-{% extends 'main/page.html' %}
-
-{% block tittle %}
-Новости
-{% endblock %}
+{% extends 'page.html' %}
 
 {% block news %}
 active
@@ -12,6 +8,16 @@ active
 
 <div class="container">
     <h1 >Новости</h1>
+    {% for el in reports %} 
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading">{{ el.title }}</h4>
+                    <p>{{ el.text }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
     <div class="row">
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">Well done!</h4>

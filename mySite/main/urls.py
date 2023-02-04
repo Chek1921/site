@@ -19,7 +19,10 @@ from main import views
 
 urlpatterns = [
     path('', views.news, name = 'news'),
-    path('bills', views.bills, name = 'bills'),
-    path('report', views.report, name = 'report')
+    path('bills/', views.bills, name = 'bills'),
+    path('report/', views.report, name = 'report'),
+    path('success', views.success, name = 'success')
+#     path('login/', views.login, name = 'login'),
+#     path('registration/', views.registration, name = 'registration'),
 ]
 

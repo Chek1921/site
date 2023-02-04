@@ -1,0 +1,87 @@
+{% extends 'page.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-md-4">
+      <div class="container p-3 my-5 bg-white" style="border-radius: 5px">
+        <h3 class = "text-center"> Регистрация </h3>
+        <form>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="login">Логин</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                </div>
+                <input type="text" class="form-control is-invalid" id="login" name="login" placeholder="Введите логин" aria-describedby="inputGroupPrepend3" required>
+                <div class="invalid-feedback">
+                  Неверный логин
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="email">Почта</label>
+              <input type="email" class="form-control is-invalid" id="email" name="email" placeholder="Введите почту" required>
+              <div class="invalid-feedback">
+                Неверная почта
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="password1">Пароль</label>
+              <input type="password" class="form-control is-invalid" id="password1" name="password1" placeholder="Введите пароль" required>
+              <div class="invalid-feedback">
+                Неверный пароль
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="password2">Пароль</label>
+              <input type="password" class="form-control is-invalid" id="password2" name="password2" placeholder="Введите пароль" required>
+              <div class="invalid-feedback">
+                Неверный пароль
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="address">Адрес</label>
+              <input type="name" class="form-control is-invalid" id="address" name="address" placeholder="Введите улицу и номер дома" required>
+              <div class="invalid-feedback">
+                Неверная почта
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="Dist">Пароль</label>
+              <select class="form-control" id="Dist" name="Dist">
+                <option disabled>Выберите район</option>
+                <option>Первый</option>
+                <option>Второй</option>
+                <option>Третий</option>
+              </select>
+            </div>
+          </div>
+
+              <button class="btn btn-primary col-md mb-3" type="submit">Регистрация</button>
+
+        </form>
+        <a href="{% url 'login' %}" class="btn btn-primary col-md mb-3">Войти</a>
+        <div class="navbar-nav form-inline my-2 my-lg-0">
+          <a href="#" class="nav-link text-secondary">Забыли пароль?</a>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+{% endblock %}
