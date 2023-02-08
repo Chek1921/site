@@ -7,7 +7,8 @@
     <div class="col-md-4">
       <div class="container p-3 my-5 bg-white" style="border-radius: 5px">
         <h3 class = "text-center"> Вход </h3>
-        <form>
+        <form method="POST">
+          {% csrf_token %}
           <div class="form-row">
             <div class="col mb-3">
               <label for="validationServerUsername">Логин</label>
@@ -15,7 +16,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroupPrepend3">@</span>
                 </div>
-                <input type="text" class="form-control is-invalid" id="validationServerUsername" placeholder="Логин" aria-describedby="inputGroupPrepend3" required>
+                <input type="text" name = 'username' class="form-control" id="validationServerUsername" placeholder="Логин" aria-describedby="inputGroupPrepend3" required>
                 <div class="invalid-feedback">
                   Неверный логин
                 </div>
@@ -25,7 +26,7 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="validationServer04">Пароль</label>
-              <input type="password" class="form-control is-invalid" id="validationServer04" placeholder="Пароль" required>
+              <input type="password" name = 'password' class="form-control" id="validationServer04" placeholder="Пароль" required>
               <div class="invalid-feedback">
                 Неверный пароль
               </div>
@@ -35,9 +36,9 @@
               <button class="btn btn-primary col-md mb-3" type="submit">Войти</button>
 
         </form>
-        
+        <a href="{% url 'registration' %}" class="btn btn-primary col-md mb-3">Регистрация</a>
         <div class="navbar-nav form-inline my-2 my-lg-0">
-          <a href="#" class="nav-link text-secondary">Забыли пароль?</a>
+          <a href="{% url 'password_reset' %}" class="nav-link text-secondary">Забыли пароль?</a>
         </div>
       </div>
     </div>
@@ -45,7 +46,8 @@
   </div>
 </div>
 
-{% if form.errors %}
+
+<!-- {% if form.errors %}
   <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
@@ -62,22 +64,15 @@
 {% csrf_token %}
 <table>
 
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
-
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
+{{ form }}
 
 <input type="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<p><a href="">Lost password?</a></p>
+
+ -->
 
 {% endblock %}
