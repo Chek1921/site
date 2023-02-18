@@ -18,7 +18,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroupPrepend3">@</span>
                 </div>
-                {{form.username|attr:"class: form-control"}}
+                {{ form.username|attr:"class: form-control" }}
+                {{ form.username.errors }}
                 <div class="invalid-feedback">
                   Неверный логин
                 </div>
@@ -28,7 +29,8 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="email">Почта</label>
-              {{form.email|attr:"class: form-control"}}
+              {{ form.email|attr:"class: form-control" }}
+              {{ form.email.errors }}
               <div class="invalid-feedback">
                 Неверная почта
               </div>
@@ -37,7 +39,8 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="password1">Пароль</label>
-              {{form.password1|attr:"class: form-control"}}
+              {{ form.password1|attr:"class: form-control" }}
+              {{ form.password2.errors }}
               <div class="invalid-feedback">
                 Пароли не совпадают
               </div>
@@ -46,7 +49,7 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="password2">Повторите пароль</label>
-              {{form.password2|attr:"class: form-control"}}
+              {{ form.password2|attr:"class: form-control" }}
               <div class="invalid-feedback">
                 Неверный пароль
               </div>
@@ -55,7 +58,8 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="address">Адрес</label>
-              {{form.address|attr:"class: form-control"}}
+              {{ form.address|attr:"class: form-control" }}
+              {{ form.address.errors }}
               <div class="invalid-feedback">
                 Неверная почта
               </div>
@@ -64,7 +68,7 @@
           <div class="form-row">
             <div class="col mb-3">
               <label for="Dist">Район</label>
-              {{form.district|attr:"class: form-control"}}
+              {{ form.district|attr:"class: form-control" }}
               <select class="form-control" id="Dist" name="Dist">
                 <option disabled>Выберите район</option>
                 <option>Первый</option>
