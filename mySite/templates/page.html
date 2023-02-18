@@ -29,6 +29,9 @@
             <li class="nav-item {% block report %}{% endblock %}">
                 <a class="nav-link" href="{% url 'report' %}">Оставить жалобу</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'report' %}">{{ user.allows }}</a>
+            </li>
         </ul>
         <div class = "navbar-nav form-inline my-2 my-lg-0 ">
             {% if user.is_authenticated %}
