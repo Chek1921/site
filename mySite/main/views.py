@@ -63,7 +63,6 @@ def logout_l(request):
 
 class CustomPasswordResetView(PasswordResetView):
     
-    email_template_name = "main/password_reset.html"
-    subject_template_name = "main/password_reset_email.txt"
-    success_url = reverse_lazy("main/password_reset_done.html")
-    template_name = "main/password_reset_complete.html"
+    email_template_name = "main/password_reset_email.txt"
+    subject_template_name = "main/password_reset_email_name.txt"
+    template_name = "main/password_reset.html"

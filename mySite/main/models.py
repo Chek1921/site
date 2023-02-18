@@ -4,6 +4,8 @@ from django.contrib.auth.base_user import BaseUserManager
 
 # Create your models here.
 
+User._meta.get_field('email')._unique = True
+
 class Reports(models.Model):
     title = models.CharField('Название', max_length=200)
     text = models.TextField('Содержание')
@@ -39,7 +41,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class CustomUser(User):
-    address = models.CharField("Адрес", max_length=100, null=False, blank=False)
+    address = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
     district = models.CharField("Район", max_length=100, null=False, blank=False)
     allows = models.CharField("Разрешение", max_length=1, null=False, blank=False)
 

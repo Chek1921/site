@@ -1,3 +1,9 @@
 body {
     background-color: #eee;
 }
+
+.errorlist {
+    list-style-type: none; 
+    color: #e66; 
+    padding: 10px;
+}
