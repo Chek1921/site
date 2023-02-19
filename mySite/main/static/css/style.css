@@ -7,3 +7,7 @@ body {
     color: #e66; 
     padding: 10px;
 }
+
+#id_district>option:first-child {
+    display: none;
+}

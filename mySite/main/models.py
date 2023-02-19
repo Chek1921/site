@@ -4,22 +4,6 @@ from django.contrib.auth.base_user import BaseUserManager
 
 # Create your models here.
 
-class Reports(models.Model):
-    title = models.CharField('Название', max_length=200)
-    text = models.TextField('Содержание')
-    vision = models.CharField('Видна ли она админу', max_length=2)
-
-    def __str__(self):
-        return self.title
-
-class Bill(models.Model):
-    title = models.CharField('Название', max_length=200)
-    counter = models.CharField('Счетчик', max_length=200)
-    whos = models.CharField('Чей', max_length=200)
-
-    def __str__(self):
-        return self.title
-
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -52,15 +36,65 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(username, password, **extra_fields)
     
 
-class CustomUser(AbstractUser):
-
-    address = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
+class District(models.Model):
     district = models.CharField("Район", max_length=100, null=False, blank=False)
+    
+    def __str__(self):
+        return self.district
+
+class Report(models.Model):
+    title = models.CharField('Название', max_length=200, null=False, blank=False)
+    text = models.TextField('Содержание', null=False, blank=False)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
+    address = models.CharField("Адрес", max_length=100, null=False, blank=False)
+    vision = models.CharField('Видна ли она админу', max_length=2, default='1')
+    time_create = models.DateTimeField(auto_now_add = True)
+    time_update = models.DateTimeField(auto_now = True)
+
+    def __str__(self):
+        return self.title
+
+class New(models.Model):
+    title = models.CharField('Название', max_length=200, null=False, blank=False)
+    text = models.TextField('Содержание', null=False, blank=False)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
+    time_create = models.DateTimeField(auto_now_add = True)
+    time_update = models.DateTimeField(auto_now = True)
+
+    def __str__(self):
+        return self.title
+
+
+class Bill(models.Model):
+    name = models.ForeignKey('Bill_name', on_delete=models.CASCADE)
+    last_count = models.CharField('Последнее оплаченное значение счетчика', max_length=200, null=False, blank=False)
+    current_count = models.CharField('Нынешнее значение счетчика', max_length=200, null=False, blank=False)
+    address = models.CharField("Адрес", max_length=100, null=False, blank=False)
+    rate = models.CharField("Тариф", max_length=100, null=False, blank=False)
+    time_pay = models.DateTimeField(auto_now = True)
+
+    def __str__(self):
+        return self.name
+
+
+class Bill_name(models.Model):
+    name = models.CharField("Название", max_length=100, null=False, blank=False)
+    unit = models.CharField("Единица измерения", max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+class Bill_rate(models.Model):
+    cost = models.CharField("Тариф", max_length=100, null=False, blank=False)
+
+
+class CustomUser(AbstractUser):
+    
+    address = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
+    # district = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
     allows = models.CharField("Разрешение", max_length=1, null=False, blank=False, default='1')
     email = models.EmailField("Почта",null=False, blank=False, unique=True)
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = []
-    
-    def __str__(self):
-        return self.email

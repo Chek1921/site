@@ -1,9 +1,5 @@
 {% extends 'page.html' %}
 
-{% block news %}
-active
-{% endblock %}
-
 {% block content %}
 
 <div class="container">
@@ -14,8 +10,12 @@ active
                 <div class="alert alert-warning" role="alert">
                     <h4 class="alert-heading">{{ el.title }}</h4>
                     <p>{{ el.text }}</p>
+                    <a href="{% url 'report' el.pk %}">ПОДРОБНЕЕ</a>
+                    {{el.time_create}}
                 </div>
             </div>
         </div>
     {% endfor %}
+
+    
 {% endblock %}

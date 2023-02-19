@@ -69,12 +69,11 @@
             <div class="col mb-3">
               <label for="Dist">Район</label>
               {{ form.district|attr:"class: form-control" }}
-              <select class="form-control" id="Dist" name="Dist">
-                <option disabled>Выберите район</option>
-                <option>Первый</option>
-                <option>Второй</option>
-                <option>Третий</option>
-              </select>
+              {{ form.district.errors }}
+              <ul class="errorlist">
+                  <li>{{ error }}</li>
+              </ul>
+              
             </div>
           </div>
 

@@ -1,10 +1,10 @@
-from .models import Reports, Bill, CustomUser
+from .models import *
 from django.forms import ModelForm, TextInput, Textarea, EmailField
 from django.contrib.auth.forms import UserCreationForm
 
 class ReportForm(ModelForm):
     class Meta:
-        model = Reports
+        model = Report
         fields = ["title", "text"]
         widgets = {
             "title": TextInput(attrs={'class':"form-control", 'placeholder': "Ошибка счетчика"}),
