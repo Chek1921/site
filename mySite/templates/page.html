@@ -13,7 +13,7 @@
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark mb-3">
     <div class="container">
-        <a class="navbar-brand" href="#">ЖКХ</a>
+        <a class="navbar-brand" href="{% url 'news' %}">ЖКХ</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -25,7 +25,7 @@
             </li>
             {%if user.allows == '1' %}
             <li class="nav-item {% if title == 'Ваши счета'%}active {%endif%}">
-                <a class="nav-link" href="{% url 'bills' %}">Просмотр счетов</a>
+                <a class="nav-link" href="{% url 'bill' user.id %}">Просмотр счетов</a>
             </li>
             <li class="nav-item {% if title == 'Создание жалобы'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'create_report' %}">Оставить жалобу</a>
@@ -34,7 +34,7 @@
                 <a class="nav-link" href="{% url 'my_reports' %}">Мои жалобы</a>
             </li>
             {% elif user.allows == '2' %}
-            <li class="nav-item {% if title == 'Ваши счета'%}active {%endif%}">
+            <li class="nav-item {% if title == 'Счета'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'bills' %}">Просмотр счетов</a>
             </li>
             <li class="nav-item {% if title == 'Жалобы'%}active {%endif%}">

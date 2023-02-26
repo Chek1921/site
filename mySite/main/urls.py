@@ -21,8 +21,10 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.news, name = 'news'),
     path('all_news', views.all_news, name = 'all_news'),
-    path('news/<int:report_id>', views.new, name = 'new'),
+    path('news/<int:new_id>', views.new, name = 'new'),
+    path('news_del/<int:new_id>', views.new_delete, name = 'new_del'),
     path('bills/', views.bills, name = 'bills'),
+    path('bills/<int:user_id>', views.bill, name = 'bill'),
     path('create_report/', views.create_report, name = 'create_report'),
     path('create_new/', views.create_new, name = 'create_new'),
     path('success', views.success, name = 'success'),

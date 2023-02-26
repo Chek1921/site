@@ -1,16 +1,14 @@
 {% extends 'page.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="container">
-        <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
-            <h1>{{ new.title }}</h1>
-            <hr>
-            {{ new.text|linebreaks }}
-            {{new.time_create}}
-        </div>
+<div class="container mt-5">
+    <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
+        <h1>{{ new.title }}</h1>
+        <hr>
+        {{ new.text|linebreaks }}
+        <div class="d-flex justify-content-between">{% if user.allows == '2' %}<a class="btn btn-primary" href="{% url 'new_del' new.id %}">Удалить</a>{%else%}<div></div>{% endif %}{{new.time_create}}</div>
     </div>
-    
+</div>
     
 
 {% endblock %}

@@ -5,42 +5,43 @@
 <div class="container">
     {%if user.allows == '1' %}
     {% if reports.exists%}
-    <h1>Отвеченные жалобы</h1>
+    <h1>Обработанные жалобы</h1>
     {% for el in reports %} 
         <div class="row">
             <div class="col">
                 <div class="alert bg-info text-white" role="alert">
                     <h4 class="alert-heading">{{ el.title }}</h4>
                     <p>{{ el.text|linebreaks|truncatewords:50 }}</p>
-                    <a href="{% url 'report' el.pk %}" class = 'btn btn-light'>Просмотреть</a>
-                    <p class = 'text-right'>{{el.time_create}}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'report' el.pk %}" class = 'btn btn-light'>Просмотреть</a>
+                        {{el.time_create}}
+                    </div>
                 </div>
             </div>
         </div>
     {% endfor %}
-    {% else %}
-    <h1>Отвеченных жалоб нет</h1>
     {% endif %}
     {% if reports_active.exists%}
-    <h1>Жалобы неотвеченные</h1>
+    <h1>Необработанные жалобы</h1>
     {% for el in reports_active %} 
         <div class="row">
             <div class="col">
                 <div class="alert bg-report" role="alert">
                     <h4 class="alert-heading">{{ el.title }}</h4>
                     <p>{{ el.text|linebreaks|truncatewords:50 }}</p>
-                    <a href="{% url 'report' el.pk %}" class = 'btn btn-info'>Просмотреть</a>
-                    <p class = 'text-right'>{{el.time_create}}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'report' el.pk %}" class = 'btn btn-info'>Просмотреть</a>
+                        {{el.time_create}}
+                </div>
                 </div>
             </div>
         </div>
     {% endfor %}
     {% else %}
-    <h1>Активных жалоб нет</h1>
+    <h1>Необработанных жалоб нет</h1>
     {% endif %}
     {%else%}
     <h1>Отказано в доступе</h1>
     {%endif%}
 </div>
 {% endblock %}
-

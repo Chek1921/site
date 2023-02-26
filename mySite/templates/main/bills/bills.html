@@ -1,0 +1,33 @@
+{% extends 'page.html' %}
+
+{% block content %}
+
+<div class="container">
+    {%if user.allows == '2'%}
+    {% if users.exists %}
+    <h1>Пользователи</h1>
+    {% for user in users %}
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="alert-heading">{{ user.address }}</h4>
+                        </div>
+                        <div>
+                            <a class = 'btn btn-primary mr-3' href="{% url 'bill' user.id %}">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+        <h1>Нет пользователей</h1>
+    {% endif %}
+    {%else%}
+    <h1>Отказано в доступе</h1>
+    {%endif%}
+</div>
+
+{% endblock %}

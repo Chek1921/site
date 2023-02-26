@@ -1,0 +1,51 @@
+{% extends 'page.html' %}
+
+{% block content %}
+
+
+
+    <div class="container">
+        {% if user.address == u.address %}
+        <div class="row">
+            {%for el in bills%}
+            <div class="col-sm">
+                <div class="container p-3 my-3 bg-secondary text-white">
+                    <h2>{{el.name}}</h2>
+                    <p>Показание счетчика: {{el.current_count}} {{el.name.unit}}</p>
+                    <p>Текущий тариф: за 1 {{el.name.unit}} к оплате {{el.rate.cost}} тенге</p>
+                    <p>К оплате: {{el.cost}} тенге</p>
+                    <div class = "d-flex justify-content-end">
+                        <a class="btn btn-info" href="">Оплатить</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif user.allows == '2' and user.district == u.district %}
+        <div class="row">
+            {%for el in bills%}
+            <div class="col-sm">
+                <div class="container p-3 my-3 bg-secondary text-white">
+                    <h2>{{el.name}}</h2>
+                    <p>Показание счетчика: <input type="number" class = "form-control" min="0" step="0.001" value="{{el.current_count}}" placeholder="Текущее показание: {{el.current_count}}"></p>
+                    <p>Текущий тариф: {{el.rate.cost}} тенге</p>
+                    <select name="" id="" class = "form-control">
+                        {% for rate in rates %}
+                        <option value="rate.id">{{rate.name}} - {{rate.cost}}</option>
+                        {% endfor %}
+                    </select>
+                    <p>Задолжность: {{el.cost}} тенге</p>
+                    <div class = "d-flex justify-content-end">
+                        <a class="btn btn-info" href="">Изменить</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h1>Отказано в доступе</h1>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

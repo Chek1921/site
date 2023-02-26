@@ -51,7 +51,6 @@ class Report(models.Model):
     a_title = models.CharField('Название ответа', max_length=200, blank=True)
     a_text = models.TextField('Содержание ответа', blank=True)
     time_create = models.DateTimeField(auto_now_add = True)
-    time_update = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return self.title
@@ -61,34 +60,36 @@ class New(models.Model):
     text = models.TextField('Содержание', null=False, blank=False)
     district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
     time_create = models.DateTimeField(auto_now_add = True)
-    time_update = models.DateTimeField(auto_now = True)
-
     def __str__(self):
         return self.title
 
 
 class Bill(models.Model):
     name = models.ForeignKey('Bill_name', on_delete=models.CASCADE)
-    last_count = models.CharField('Последнее оплаченное значение счетчика', max_length=200, null=False, blank=False)
-    current_count = models.CharField('Нынешнее значение счетчика', max_length=200, null=False, blank=False)
+    last_count = models.FloatField('Последнее оплаченное значение счетчика', null=False, blank=False)
+    current_count = models.FloatField('Нынешнее значение счетчика',  null=False, blank=False)
     address = models.CharField("Адрес", max_length=100, null=False, blank=False)
     rate = models.ForeignKey('Bill_rate', on_delete=models.PROTECT)
+    cost = models.FloatField('Для оплаты')
     time_pay = models.DateTimeField(auto_now = True)
 
     def __str__(self):
-        return self.name
+        return self.address
 
 
 class Bill_name(models.Model):
     name = models.CharField("Название", max_length=100, null=False, blank=False)
     unit = models.CharField("Единица измерения", max_length=100, null=False, blank=False)
+    default_rate = models.SmallIntegerField("Стандартное значение при создании счетичка", null=False, blank=False)
+
 
     def __str__(self):
         return self.name
 
 class Bill_rate(models.Model):
     name = models.CharField("Название тарифа", max_length=100, null=False, blank=False)
-    cost = models.FloatField("Тариф", max_length=100, null=False, blank=False)
+    cost = models.FloatField("Тариф", null=False, blank=False)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
 
     def __str__(self):
         return self.name
@@ -97,11 +98,10 @@ class Bill_rate(models.Model):
 class CustomUser(AbstractUser):
     
     address = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
-    # district = models.CharField("Адрес", max_length=100, null=False, blank=False, unique=True)
     district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
     allows = models.CharField("Разрешение", max_length=1, null=False, blank=False, default='1')
     email = models.EmailField("Почта",null=False, blank=False, unique=True)
-    want_staff = models.BooleanField("Хочет быть админом")
+    want_staff = models.BooleanField("Хочет быть админом", default=False)
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = []

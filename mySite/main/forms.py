@@ -16,7 +16,7 @@ class NewForm(ModelForm):
         model = New
         fields = ["title", "text", "district"]
         widgets = {
-            "title": TextInput(attrs={'class':"form-control", 'placeholder': "Ошибка счетчика"}),
+            "title": TextInput(attrs={'class':"form-control", 'placeholder': "Первая новость"}),
             "text": Textarea(attrs={'class': 'form-control', 'rows': 12})
         }
 

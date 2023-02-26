@@ -2,16 +2,13 @@
 
 {% block content %}
 <div class="container">
-    <div class="container">
-        <div class="container p-3 my-3 bg-report" style="border-radius: 5px;  ">
-            <h1>{{ report.title }}</h1>
-            <hr>
-            {{ report.text|linebreaks }}
-        </div>
+    <div class="container p-3 my-3 bg-report" style="border-radius: 5px;  ">
+        <h1>{{ report.title }}</h1>
+        <hr>
+        {{ report.text|linebreaks }}
     </div>
     
     {% if report.vision == '2' and report.a_title != '' and report.a_text != '' %}
-    <div class="container">
         <div class="container p-3 my-3 bg-info text-white" style="border-radius: 5px;  ">
             <h1>{{ report.a_title }}</h1>
             <hr>
@@ -23,11 +20,9 @@
         <div class="container p-3 my-3 bg-info text-white" style="border-radius: 5px;  ">
             <h1>Жалоба рассмотрена</h1>
             </div>
-    </div>
     {% endif %}
 
     {% if user.allows == '2' and report.vision == '1' %}
-    <div class="container">
         <div class="container p-3 my-3 bg-info text-white" style="border-radius: 5px;  ">
             <form method="post"> {% csrf_token %}
                 <div class="form-group">
@@ -49,7 +44,6 @@
                 </div>
             </form>
         </div>
-    </div>
     {% endif %}
     <div class = 'text-right'>
         {{report.time_create}}

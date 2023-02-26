@@ -15,13 +15,13 @@ from django.db.models import Q
 
 
 def news(request):
-    all_news = New.objects.filter(district = 1).order_by('-id')[:3]
+    all_news = New.objects.filter(district = 1).order_by('-time_create')[:3]
     dist_news = None
     reports = None
     if request.user.is_authenticated:
-        dist_news = New.objects.filter(district = request.user.district).order_by('-id')[:3]
+        dist_news = New.objects.filter(district = request.user.district).order_by('-time_create')[:3]
         if request.user.allows == '1':
-            reports = Report.objects.filter(address = request.user.address, vision = '2').order_by('-id')[:3]
+            reports = Report.objects.filter(address = request.user.address, vision = '2').order_by('-time_create')[:3]
     
     return render(request, 'main/news.html', {
         'title': 'Новости', 
@@ -32,17 +32,30 @@ def news(request):
 
 def all_news(request):
     if request.user.is_authenticated:
-        all_news = New.objects.filter(Q(district = 1) | Q(district = request.user.district)).order_by('-id')
+        all_news = New.objects.filter(Q(district = 1) | Q(district = request.user.district)).order_by('-time_create')
     else: 
-        all_news = New.objects.filter(district = 1).order_by('-id')
+        all_news = New.objects.filter(district = 1).order_by('-time_create')
     
     return render(request, 'main/all_news.html', {
         'title': 'Новости', 
         'all_news': all_news,
         })
 
+def bill(request, user_id):
+    user = CustomUser.objects.get(id = user_id)
+    if request.user.id == user_id:
+        title = "Ваши счета"
+    else:
+        title = "Счета " + user.address
+    bills = Bill.objects.filter(address = user.address)
+    for el in bills:
+        el.cost = (el.current_count - el.last_count) * el.rate.cost
+    rates = Bill_rate.objects.filter(Q(district = 1) | Q(district = user.district))
+    return render(request, 'main/bills/bill.html', {'title': title, 'bills': bills, 'u': user, 'rates': rates})
+
 def bills(request):
-    return render(request, 'main/user/bills.html', {'title': 'Ваши счета'})
+    users = CustomUser.objects.filter(district = request.user.district, allows = '1')
+    return render(request, 'main/bills/bills.html', {'title': 'Счета', 'users': users})
 
 def create_report(request):
     form = ReportForm()
@@ -122,8 +135,8 @@ def report(request, report_id):
     else:
         return redirect('news')
 
-def new(request, report_id):
-    new = get_object_or_404(New, id=report_id)
+def new(request, new_id):
+    new = get_object_or_404(New, id=new_id)
     context = {
         'new': new,
         'title': new.title,
@@ -153,6 +166,14 @@ def admin_reg_delete(requset, user_id):
         user = CustomUser.objects.get(id = user_id)
         user.want_staff = False
         return redirect("admin_reg")
+    else: 
+        return redirect("news")
+    
+def new_delete(requset, new_id):
+    if requset.user.allows == '2':
+        new = New.objects.get(id = new_id)
+        new.delete()
+        return redirect("news")
     else: 
         return redirect("news")
 

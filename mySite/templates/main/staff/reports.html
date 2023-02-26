@@ -12,8 +12,10 @@
                 <div class="alert bg-report" role="alert">
                     <h4 class="alert-heading">{{ el.title }}</h4>
                     <p>{{ el.text|linebreaks|truncatewords:50 }}</p>
-                    <a href="{% url 'report' el.pk %}" class = 'btn btn-info'>Ответить</a>
-                    <p class = 'text-right'>{{el.time_create}}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'report' el.pk %}" class = 'btn btn-info'>Ответить</a>
+                        {{el.time_create}}
+                    </div>
                 </div>
             </div>
         </div>
