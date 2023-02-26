@@ -1,0 +1,34 @@
+{% extends 'page.html' %}
+
+{% block content %}
+
+
+<div class="container">
+    {%if user.allows == '3'%}
+    {% if users.exists %}
+    <h1>Заявки</h1>
+    {% for user in users %}
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading">{{ user.username }}</h4>
+                    <p>{{ user.email }}</p>
+                    <p>{{ user.district }}</p>
+                    <p class="mt-3">
+                        <a class = 'btn btn-primary mr-3' href="{% url 'admin_reg_del' user.id %}">Удалить</a>
+                        <a class = 'btn btn-primary' href="{% url 'admin_reg_aprv' user.id %}">Одобрить</a>
+                    </p>
+                    <p class = 'text-right'>{{user.date_joined}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+        <h1>Нет заявок</h1>
+    {% endif %}
+    {%else%}
+    <h1>Отказано в доступе</h1>
+    {%endif%}
+</div>
+   
+{% endblock %}

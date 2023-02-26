@@ -9,19 +9,19 @@
     {% for el in reports %} 
         <div class="row">
             <div class="col">
-                <div class="alert bg-report" role="alert">
+                <div class="alert bg-info text-white" role="alert">
                     <h4 class="alert-heading">{{ el.title }}</h4>
                     <p>{{ el.text|linebreaks|truncatewords:50 }}</p>
-                    <a href="{% url 'report' el.pk %}" class = 'btn btn-info'>Ответить</a>
+                    <a href="{% url 'report' el.pk %}" class = 'btn btn-light'>Просмотреть</a>
                     <p class = 'text-right'>{{el.time_create}}</p>
                 </div>
             </div>
         </div>
     {% endfor %}
     {% else %}
-    <h1>Жалобы закончились</h1>
+    <h1>Жалоб нет</h1>
     {% endif %}
-    <h1><a href="{% url 'reports_history' %}">История жалоб</a></h1>
+    <h1><a href="{% url 'reports' %}">Все жалобы</a></h1>
     {%else%}
     <h1>Отказано в доступе</h1>
     {%endif%}

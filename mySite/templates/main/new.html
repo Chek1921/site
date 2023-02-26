@@ -2,8 +2,15 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{ new.title }}</h1>
-    <p>{{ new.text }}</p>
-    {{new.time_create}}
+    <div class="container">
+        <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
+            <h1>{{ new.title }}</h1>
+            <hr>
+            {{ new.text|linebreaks }}
+            {{new.time_create}}
+        </div>
+    </div>
+    
+    
 
 {% endblock %}

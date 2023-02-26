@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark mb-3">
     <div class="container">
         <a class="navbar-brand" href="#">ЖКХ</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,22 +30,25 @@
             <li class="nav-item {% if title == 'Создание жалобы'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'create_report' %}">Оставить жалобу</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'create_report' %}"></a>
+            <li class="nav-item {% if title == 'Мои жалобы'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'my_reports' %}">Мои жалобы</a>
             </li>
             {% elif user.allows == '2' %}
             <li class="nav-item {% if title == 'Ваши счета'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'bills' %}">Просмотр счетов</a>
             </li>
-            <li class="nav-item {% if title == 'Создание жалобы'%}active {%endif%}">
-                <a class="nav-link" href="{% url 'create_report' %}">Просмотр жалоб</a>
+            <li class="nav-item {% if title == 'Жалобы'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'reports' %}">Просмотр жалоб</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'create_report' %}">Добавление новости</a>
+            <li class="nav-item {% if title == 'Создание новости'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'create_new' %}">Добавление новости</a>
             </li>
             {% elif user.allows == '3' %}
             <li class="nav-item {% if title == ''%}active {%endif%}">
-                <a class="nav-link" href="{% url 'news' %}">Рассмотр заявок на управляющего</a>
+                <a class="nav-link" href="{% url 'admin_reg' %}">Рассмотр заявок на управляющего</a>
+            <li class="nav-item {% if title == ''%}active {%endif%}">
+                <a class="nav-link" href="/admin">Админка</a>
+            </li>
             </li>
             {% endif %}
         </ul>

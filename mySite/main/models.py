@@ -48,6 +48,8 @@ class Report(models.Model):
     district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
     address = models.CharField("Адрес", max_length=100, null=False, blank=False)
     vision = models.CharField('Видна ли она админу', max_length=2, default='1')
+    a_title = models.CharField('Название ответа', max_length=200, blank=True)
+    a_text = models.TextField('Содержание ответа', blank=True)
     time_create = models.DateTimeField(auto_now_add = True)
     time_update = models.DateTimeField(auto_now = True)
 
@@ -70,7 +72,7 @@ class Bill(models.Model):
     last_count = models.CharField('Последнее оплаченное значение счетчика', max_length=200, null=False, blank=False)
     current_count = models.CharField('Нынешнее значение счетчика', max_length=200, null=False, blank=False)
     address = models.CharField("Адрес", max_length=100, null=False, blank=False)
-    rate = models.CharField("Тариф", max_length=100, null=False, blank=False)
+    rate = models.ForeignKey('Bill_rate', on_delete=models.PROTECT)
     time_pay = models.DateTimeField(auto_now = True)
 
     def __str__(self):
@@ -85,7 +87,11 @@ class Bill_name(models.Model):
         return self.name
 
 class Bill_rate(models.Model):
-    cost = models.CharField("Тариф", max_length=100, null=False, blank=False)
+    name = models.CharField("Название тарифа", max_length=100, null=False, blank=False)
+    cost = models.FloatField("Тариф", max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
 
 
 class CustomUser(AbstractUser):
@@ -95,6 +101,7 @@ class CustomUser(AbstractUser):
     district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
     allows = models.CharField("Разрешение", max_length=1, null=False, blank=False, default='1')
     email = models.EmailField("Почта",null=False, blank=False, unique=True)
+    want_staff = models.BooleanField("Хочет быть админом")
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = []
