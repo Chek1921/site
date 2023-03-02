@@ -5,8 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import resolve_url, get_object_or_404
 from django.db.models import Q, Exists
-
-
+from django.views.generic.list import ListView
 
 # Create your views here.
 
@@ -43,16 +42,24 @@ def account(request):
                 error = 'Выберите район'
     return render(request, 'main/user/account.html', {'title': 'Ваш аккаунт', "form": form, "error": error})
 
-def all_news(request):
-    if request.user.is_authenticated:
-        all_news = New.objects.filter(Q(district = 1) | Q(district = request.user.district)).order_by('-time_create')
-    else: 
-        all_news = New.objects.filter(district = 1).order_by('-time_create')
+class AllNews(ListView):
+    model = New
+    template_name = 'main/all_news.html'
+    paginate_by = 10 
+    context_object_name = 'all_news'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Новости'
+        return context
     
-    return render(request, 'main/all_news.html', {
-        'title': 'Новости', 
-        'all_news': all_news,
-        })
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            all_news = New.objects.filter(Q(district = 1) | Q(district = self.request.user.district)).order_by('-time_create')
+        else: 
+            all_news = New.objects.filter(district = 1).order_by('-time_create')
+        print(all_news)
+        return all_news
 
 def bill(request, user_id):
     rows = []
@@ -97,7 +104,7 @@ def create_report(request):
         form_data = request.POST.copy()
         form_data['district'] = request.user.district
         form_data['address'] = request.user.address
-        form = ReportForm(form_data)
+        form = ReportForm(form_data, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('success')
@@ -231,13 +238,34 @@ def new(request, new_id):
     
     return render(request, 'main/new.html', context=context)
 
-def reports(request):
-    reports_actual = Report.objects.filter(district = request.user.district, vision = '1')
-    return render(request, 'main/staff/reports.html', {'title': 'Жалобы', 'reports': reports_actual})
+class Reports(ListView):
+    model = Report
+    template_name = 'main/staff/reports.html'
+    paginate_by = 10 
+    context_object_name = 'reports'
 
-def reports_history(request):
-    reports_history = Report.objects.filter(district = request.user.district, vision = '2')
-    return render(request, 'main/staff/reports_history.html', {'title': 'Жалобы', 'reports': reports_history})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Жалобы'
+        return context
+    
+    def get_queryset(self):
+        return Report.objects.filter(district = self.request.user.district, vision = '1')
+
+class ReportsHistory(ListView):
+    model = Report
+    template_name = 'main/staff/reports_history.html'
+    paginate_by = 10 
+    context_object_name = 'reports'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Жалобы'
+        return context
+    
+    def get_queryset(self):
+        return Report.objects.filter(district = self.request.user.district, vision = '2')
+
 
 def my_reports(request):
     reports = Report.objects.filter(address = request.user.address, vision = '2')

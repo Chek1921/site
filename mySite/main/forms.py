@@ -1,14 +1,14 @@
 from .models import *
-from django.forms import ModelForm, TextInput, Textarea, Select, NumberInput
+from django.forms import ModelForm, TextInput, Textarea, Select, NumberInput, ImageField
 from django.contrib.auth.forms import UserCreationForm
 
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ["title", "text", "district", "address"]
+        fields = ["title", "text", "district", "address", "photo"]
         widgets = {
             "title": TextInput(attrs={'class':"form-control", 'placeholder': "Ошибка счетчика"}),
-            "text": Textarea(attrs={'class': 'form-control', 'rows': 12})
+            "text": Textarea(attrs={'class': 'form-control', 'rows': 12}),
         }
 
 class NewForm(ModelForm):

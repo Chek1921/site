@@ -57,6 +57,7 @@ class Report(models.Model):
     vision = models.CharField('Видна ли она админу', max_length=2, default='1')
     a_title = models.CharField('Название ответа', max_length=200, blank=True)
     a_text = models.TextField('Содержание ответа', blank=True)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)
     time_create = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):

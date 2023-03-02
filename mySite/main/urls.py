@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.news, name = 'news'),
-    path('all_news', views.all_news, name = 'all_news'),
+    path('all_news', views.AllNews.as_view(), name = 'all_news'),
     path('news/<int:new_id>', views.new, name = 'new'),
     path('news_del/<int:new_id>', views.new_delete, name = 'new_del'),
     path('bills/bill_del/<int:bill_id>', views.bill_delete, name = 'bill_del'),
@@ -40,12 +40,12 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='main/reg/password_reset_complete.html'), name='password_reset_complete'), 
     path("password_reset", views.CustomPasswordResetView.as_view(), name="password_reset"),
     path('reports/<int:report_id>', views.report, name = 'report'),
-    path('reports', views.reports, name = 'reports'),
+    path('reports', views.Reports.as_view(), name = 'reports'),
     path('admin_reg', views.admin_reg, name = 'admin_reg'),
     path('change_bill_rate', views.change_bill_rate, name = 'change_bill_rate'),
     path('admin_reg_del/<int:user_id>', views.admin_reg_delete, name = 'admin_reg_del'),
     path('admin_reg_aprv/<int:user_id>', views.admin_reg_approve, name = 'admin_reg_aprv'),
-    path('reports_history', views.reports_history, name = 'reports_history'),
+    path('reports_history', views.ReportsHistory.as_view(), name = 'reports_history'),
     path('my_reports', views.my_reports, name = 'my_reports'),
     path('account', views.account, name='account'),
     path('account/del/<int:user_id>', views.account_del, name='account_del'),

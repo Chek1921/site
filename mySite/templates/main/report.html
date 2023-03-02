@@ -5,7 +5,16 @@
     <div class="container p-3 my-3 bg-report" style="border-radius: 5px;  ">
         <h1>{{ report.title }}</h1>
         <hr>
+        
         {{ report.text|linebreaks }}
+
+        {% if report.photo %}
+            <img class="img-fluid" alt="Responsive image" src="{{ report.photo.url }}" alt="">
+        {% endif %}
+        
+        <div class = 'd-flex justify-content-end'>
+            {{report.address}}
+        </div>
     </div>
     
     {% if report.vision == '2' and report.a_title != '' and report.a_text != '' %}

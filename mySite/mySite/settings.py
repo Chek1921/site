@@ -134,3 +134,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'I7776455656@gmail.com'
 EMAIL_HOST_PASSWORD = 'fsuxikqmyjsvxovj'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

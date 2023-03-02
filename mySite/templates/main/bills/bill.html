@@ -34,7 +34,7 @@
                 <form action="" method="post">{%csrf_token%}
                     <div class="container p-3 my-3 bg-secondary text-white">
                         <h2>{{el.name}}</h2>
-                        <p>Показание счетчика: <input type="number" name = 'current_count' class = "form-control" min="0" step="0.001" value="{{el.current_count}}" placeholder="Текущее показание: {{el.current_count}}"></p>
+                        <p>Показание счетчика: <input type="number" name = 'current_count' class = "mt-2 form-control" min="0" step="0.001" value="{{el.current_count}}" placeholder="Текущее показание: {{el.current_count}}"></p>
                         <p>Текущий тариф: {{el.rate.cost}} тенге</p>
                         <select name="rate" id="" class = "form-control">
                             {% for rate in rates %}
@@ -43,7 +43,7 @@
                             {% endif %}
                             {% endfor %}
                         </select>
-                        <p>Задолжность: {{el.cost}} тенге</p>
+                        <p class = "mt-3">Задолжность: {{el.cost}} тенге</p>
                         <input class = "d-none" type="text" name="id" id="" value = "{{el.id}}">
                         <div class = "d-flex justify-content-between">
                             <a class="btn btn-info" href="{% url 'bill_del' el.id %}">Удалить</a>
