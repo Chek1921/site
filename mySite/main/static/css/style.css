@@ -2,6 +2,10 @@ body {
     background-color: #eee;
 }
 
+h1 {
+    margin-bottom: 20px;
+}
+
 .errorlist {
     list-style-type: none; 
     color: #e66; 
@@ -32,4 +36,5 @@ body {
     background-size: auto auto, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
     background-clip: padding-box, border-box, border-box, border-box, border-box;
     background-origin: padding-box, border-box, border-box, border-box, border-box;
+    margin-bottom: 35px;
 }

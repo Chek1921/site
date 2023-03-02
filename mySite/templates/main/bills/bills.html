@@ -4,6 +4,7 @@
 
 <div class="container">
     {%if user.allows == '2'%}
+    <a href="{%url 'create_rate'%}">Создать тариф</a>
     {% if users.exists %}
     <h1>Пользователи</h1>
     {% for user in users %}

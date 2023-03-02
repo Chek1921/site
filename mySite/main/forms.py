@@ -1,5 +1,5 @@
 from .models import *
-from django.forms import ModelForm, TextInput, Textarea, EmailField
+from django.forms import ModelForm, TextInput, Textarea, Select, NumberInput
 from django.contrib.auth.forms import UserCreationForm
 
 class ReportForm(ModelForm):
@@ -23,7 +23,46 @@ class NewForm(ModelForm):
 class BillForm(ModelForm):
     class Meta:
         model = Bill
-        fields = []
+        fields = ["name", "last_count", "current_count", "address", "rate", "cost"]
+        widgets = {
+            "name": Select(attrs = {'class':"form-control"}),
+            "current_count": NumberInput(attrs = {'class':"form-control"}),
+        }
+
+class BillRateForm(ModelForm):
+    class Meta:
+        model = Bill_rate
+        fields = ["name", "cost", "district", "bill_name"]
+        widgets = {
+            "name": TextInput(attrs={'class':"form-control"}),
+            "bill_name": Select(attrs = {'class':"form-control"}),
+            "cost": NumberInput(attrs = {'class':"form-control"}),
+        }
+
+class BillNameForm(ModelForm):
+    class Meta:
+        model = Bill_name
+        fields = ["name", "unit", "default_rate"]
+        widgets = {
+            "name": TextInput(attrs={'class':"form-control"}),
+            "unit": TextInput(attrs = {'class':"form-control"}),
+        }
+
+class ChangeDistictForm(ModelForm):
+    class Meta:
+        model = ChangeDistict
+        fields = ["user", "district"]
+        widgets = {
+             'district': Select(attrs={'class': "form-control"})
+        }
+
+class DistrictForm(ModelForm):
+     class Meta:
+          model = District
+          fields = ['district']
+          widgets = {
+               "district": TextInput(attrs={'class':"form-control"}),
+          }
 
 # Create your forms here.
 

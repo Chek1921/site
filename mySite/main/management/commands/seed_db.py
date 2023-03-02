@@ -21,7 +21,7 @@ class Command(BaseCommand):
         for i in range(len(names)):
             bill_name = Bill_name(
                 name = names[i],
-                unit = units[i]
+                unit = units[i],
                 default_rate = i+1
             )
             bill_name.save()

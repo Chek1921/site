@@ -43,18 +43,30 @@
             <li class="nav-item {% if title == 'Создание новости'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'create_new' %}">Добавление новости</a>
             </li>
+            <li class="nav-item {% if title == 'Смена района'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'change_district' %}">Смена района</a>
+            </li>
             {% elif user.allows == '3' %}
-            <li class="nav-item {% if title == ''%}active {%endif%}">
-                <a class="nav-link" href="{% url 'admin_reg' %}">Рассмотр заявок на управляющего</a>
+            <li class="nav-item {% if title == 'Заявки'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'admin_reg' %}">Заявки персонала</a>
+            </li>
+            <li class="nav-item {% if title == 'Добавление района'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'create_district' %}">Добавление района</a>
+            </li>
+            <li class="nav-item {% if title == 'Создание счетчика'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'create_name' %}">Создание счетчика</a>
+            </li>
+            <li class="nav-item {% if title == 'Тарифы'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'change_bill_rate' %}">Изменение тарифов</a>
+            </li>
             <li class="nav-item {% if title == ''%}active {%endif%}">
                 <a class="nav-link" href="/admin">Админка</a>
-            </li>
             </li>
             {% endif %}
         </ul>
         <div class = "navbar-nav form-inline my-2 my-lg-0 ">
             {% if user.is_authenticated %}
-                <span class="text-white">({{ user.username }})</span>
+                <a class="text-white" href="{% url 'account' %}">({{ user.username }})</a>
                 <a class="nav-link" href="{% url 'logout' %}">Выйти из аккаунта</a>
             {% else %}
                 <a class="nav-link" href="{% url 'login' %}">Войти в аккаунт</a>

@@ -1,0 +1,28 @@
+{% extends 'page.html' %}
+
+{% block content %}
+    {%if user.allows == '3' %}
+        <div class="container">
+            <div class="p-3 my-3 bg-secondary text-white col-sm" style="border-radius: 5px;">
+                <form method="post"> {% csrf_token %}
+                    <div class="form-group">
+                        <label for="report_name">Название нового счета</label>
+                        {{ form.name }} 
+                    </div>
+                    <div class="form-group">
+                        <label for="report_text">Единица измерения нового счета</label>
+                        {{ form.unit }}
+                    </div>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-dark">Создать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <p>Отказано в доступе</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

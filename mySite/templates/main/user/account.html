@@ -1,0 +1,33 @@
+{% extends 'page.html' %}
+
+{% block content %}
+    
+<div class="container">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h3 class="card-title">{{user.username}}</h3>
+            <h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
+            <p class="card-text">Ваш район: {{user.district}}</p>
+            <p class="card-text mb-1">Сменить район</p>
+            <form action="" method="post" class = "d-flex mt-1">{%csrf_token%}
+            <div class="mr-3">
+                {{form.district}}
+                <ul class="errorlist">
+                    <li>{{ error }}</li>
+                </ul>
+            </div>
+            <div>
+                <input class = 'btn btn-primary' type="submit" value="Изменить">
+            </div>
+            </form>
+            <p class="card-text">Ваш адрес: {{user.address}}</p>
+            <div class="d-flex justify-content-end">
+                <a class = 'btn btn-danger' href="{% url 'account_del' user.id %}">Удалить аккаунт</a>
+            </div>
+        </div>
+      </div>
+</div> 
+    
+{% endblock %}
+
+

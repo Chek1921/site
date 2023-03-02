@@ -37,10 +37,17 @@ class CustomUserManager(BaseUserManager):
     
 
 class District(models.Model):
-    district = models.CharField("Район", max_length=100, null=False, blank=False)
+    district = models.CharField("Район", max_length=100, null=False, blank=False, unique=True)
     
     def __str__(self):
         return self.district
+
+class ChangeDistict(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    district = models.ForeignKey('District', on_delete=models.CASCADE, default='1')
+
+    def __str__(self):
+        return self.user
 
 class Report(models.Model):
     title = models.CharField('Название', max_length=200, null=False, blank=False)
@@ -82,14 +89,14 @@ class Bill_name(models.Model):
     unit = models.CharField("Единица измерения", max_length=100, null=False, blank=False)
     default_rate = models.SmallIntegerField("Стандартное значение при создании счетичка", null=False, blank=False)
 
-
     def __str__(self):
         return self.name
 
 class Bill_rate(models.Model):
     name = models.CharField("Название тарифа", max_length=100, null=False, blank=False)
     cost = models.FloatField("Тариф", null=False, blank=False)
-    district = models.ForeignKey(District, on_delete=models.CASCADE, default='1')
+    district = models.ForeignKey('District', on_delete=models.CASCADE, default='1')
+    bill_name = models.ForeignKey('Bill_name', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
