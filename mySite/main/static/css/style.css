@@ -1,5 +1,17 @@
 body {
     background-color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+iframe {
+    width: 100%;
+    height: 300px;
 }
 
 h1 {

@@ -2,6 +2,11 @@ from .models import *
 from django.forms import ModelForm, TextInput, Textarea, Select, NumberInput, ImageField
 from django.contrib.auth.forms import UserCreationForm
 
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = ["address", "district", 'name', 'rate_name', 'rate_cost', 'current_count', 'cost']
+
 class ReportForm(ModelForm):
     class Meta:
         model = Report

@@ -19,7 +19,7 @@ class CustomUserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, username, password, **extra_fields):
+    def create_superuser(self, username, password,**extra_fields):
         """
         Create and save a SuperUser with the given email and password.
 
@@ -28,6 +28,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("allows", '3')
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superuser must have is_staff=True."))
@@ -48,6 +49,19 @@ class ChangeDistict(models.Model):
 
     def __str__(self):
         return self.user
+
+class Payment(models.Model):
+    address = models.CharField("Адрес", max_length=100, null=False, blank=False)
+    district = models.CharField("Район", max_length=100, null=False, blank=False)
+    name = models.CharField("Район", max_length=100, null=False, blank=False)
+    rate_name = models.CharField("Название тарифа", max_length=100, null=False, blank=False)
+    rate_cost = models.FloatField('Стоимость тарифа ',  null=False, blank=False)
+    current_count = models.FloatField('Нынешнее значение счетчика',  null=False, blank=False)
+    cost = models.FloatField('Для оплаты')
+    time_create = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return self.address + ' : ' + self.name + ' : ' + str(self.time_create)
 
 class Report(models.Model):
     title = models.CharField('Название', max_length=200, null=False, blank=False)
@@ -79,7 +93,7 @@ class Bill(models.Model):
     address = models.CharField("Адрес", max_length=100, null=False, blank=False)
     rate = models.ForeignKey('Bill_rate', on_delete=models.PROTECT)
     cost = models.FloatField('Для оплаты')
-    time_pay = models.DateTimeField(auto_now = True)
+    time_pay = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.address

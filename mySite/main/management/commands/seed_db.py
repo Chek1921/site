@@ -34,7 +34,9 @@ class Command(BaseCommand):
         for i in range(len(names)):
             bill_rate = Bill_rate(
                 name = names[i],
-                cost = costs[i]
+                cost = costs[i],
+                district = District.objects.get(id = 1),
+                bill_name = Bill_name.objects.get(id = i+1),
             )
             bill_rate.save()
 

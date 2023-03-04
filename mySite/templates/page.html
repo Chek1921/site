@@ -33,6 +33,9 @@
             <li class="nav-item {% if title == 'Мои жалобы'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'my_reports' %}">Мои жалобы</a>
             </li>
+            <li class="nav-item {% if title == 'Квитанции'%}active {%endif%}">
+                <a class="nav-link" href="{% url 'receipts' %}">Квитанции</a>
+            </li>
             {% elif user.allows == '2' %}
             <li class="nav-item {% if title == 'Счета'%}active {%endif%}">
                 <a class="nav-link" href="{% url 'bills' %}">Просмотр счетов</a>
@@ -79,6 +82,34 @@
     {% block content %}
 
     {% endblock %}
+
+{%comment%}
+<footer class="footer text-white pt-4 bg-secondary">
+    <div class="container text-center text-md-left">
+      <div class="row">
+        <div class="col-md-6 mt-md-0 mt-3">
+
+            <h5 class="text-uppercase font-weight-bold">О нас</h5>
+            <p> Сайт был создан для удобного взаимодействия с работниками и пользователями ЖКХ услуг. </p>
+            <p> Наш главный офис расположен по адресу: проспект Нурсултана Назарбаева 56. </p>
+            <p> Контактный адрес электронной почты: chek1921@mail.ru</p>
+  
+        </div>
+  
+        <hr class="clearfix w-100 d-md-none pb-3">
+  
+        <div class="col-md-6 mb-md-0 mb-3">
+  
+            <div style="position:relative;overflow:hidden;"><a href="https://yandex.kz/maps/164/karaganda/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Караганда</a><a href="https://yandex.kz/maps/164/karaganda/house/Y0oYdwdkSkUCQFpjfXRweXplYQ==/?ll=73.104661%2C49.818258&utm_medium=mapframe&utm_source=maps&z=17.95" style="color:#eee;font-size:12px;position:absolute;top:14px;">Проспект Нурсултана Назарбаева, 56 — Яндекс Карты</a><iframe src="https://yandex.kz/map-widget/v1/?ll=73.104661%2C49.818258&mode=whatshere&whatshere%5Bpoint%5D=73.104512%2C49.818594&whatshere%5Bzoom%5D=17&z=17.95" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright text-center py-3">© 2023 Copyright:
+      <a href="/" class = "text-info"> chek1921</a>
+    </div>
+</footer>
+{%endcomment%}
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

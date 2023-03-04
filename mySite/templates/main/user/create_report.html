@@ -1,6 +1,7 @@
 {% extends 'page.html' %}
 
 {% block content %}
+{% load widget_tweaks %}
 {% if user.is_authenticated %}
     {%if user.allows == '1' %}
         <div class="container">

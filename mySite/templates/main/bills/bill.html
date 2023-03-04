@@ -6,8 +6,8 @@
 
     <div class="container">
         {% if user.address == u.address %}
-        <div class="row">
-            <a href="{% url 'create_bill' %}">Создать счет</a>
+        <div class="row justify-content-center">
+            <a class = 'btn btn-primary' href="{% url 'create_bill' %}" style = 'border-radius: 5px; width: 300px;'>Создать счет</a>
         </div>
         {%for bill_row in bills %}
         <div class="row">
@@ -18,8 +18,13 @@
                     <p>Показание счетчика: {{el.current_count}} {{el.name.unit}}</p>
                     <p>Текущий тариф: за 1 {{el.name.unit}} к оплате {{el.rate.cost}} тенге</p>
                     <p>К оплате: {{el.cost}} тенге</p>
+                    {%if el.time_pay%}
+                    <p>Последняя оплата: {{el.time_pay}}</p>
+                    {%else%}
+                    <p>Последняя оплата: еще не оплачивался</p>
+                    {%endif%}
                     <div class = "d-flex justify-content-between">
-                        <a class="btn btn-info" href="">Оплатить</a>
+                        <a class="btn btn-info" href="{%url 'payment' el.id%}">Оплатить</a>
                     </div>
                 </div>
             </div>

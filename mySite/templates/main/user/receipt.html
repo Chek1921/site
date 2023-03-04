@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Счет №{{payment.id}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    
+{% load static %} 
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+<div class="container">
+    {%if user.address == payment.address %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-md-4">
+            <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
+                <h1>Счет №{{payment.id}}</h1>
+                <hr>
+                <p>Ваш адрес: {{payment.address}}</p>
+                <p>Ваш район: {{payment.district}}</p>
+                <p>Текущий тариф: {{payment.rate_name}}-{{payment.rate_cost}}</p>
+                <p>Текущий счетчик: {{payment.current_count}}</p>
+                <p>Стоимость: {{payment.cost}} тенге</p>
+                <hr>
+                <img class = 'img-fluid'src="{% static "img/Approved-Green-Stamp-PNG-Photo.png" %}" alt="">
+            </div>
+        </div>
+        <div class="col"></div>
+    {% else %}
+        <p>Отказано в доступе</p>
+    {% endif %}
+</div>
+
+
+</body>
+</html>

@@ -3,29 +3,52 @@
 {% block content %}
     
 <div class="container">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h3 class="card-title">{{user.username}}</h3>
-            <h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
-            <p class="card-text">Ваш район: {{user.district}}</p>
-            <p class="card-text mb-1">Сменить район</p>
-            <form action="" method="post" class = "d-flex mt-1">{%csrf_token%}
-            <div class="mr-3">
-                {{form.district}}
-                <ul class="errorlist">
-                    <li>{{ error }}</li>
-                </ul>
-            </div>
-            <div>
-                <input class = 'btn btn-primary' type="submit" value="Изменить">
-            </div>
-            </form>
-            <p class="card-text">Ваш адрес: {{user.address}}</p>
-            <div class="d-flex justify-content-end">
-                <a class = 'btn btn-danger' href="{% url 'account_del' user.id %}">Удалить аккаунт</a>
+    <div class="row">
+        <div class="col d-flex justify-content-center  mb-4">
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h3 class="card-title">Аккаунт: {{user.username}}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
+                    <p class="card-text">Ваш район: {{user.district}}</p>
+                    <p class="card-text mt-1">Ваш адрес: {{user.address}}</p>
+                    <p class="card-text mb-1">Сменить район</p>
+                    <form action="" method="post" class = "d-flex mt-1 justify-content-between">{%csrf_token%}
+                    <div class="mr-3 w-100">
+                        {{form.district}}
+                    </div>
+                    <div>
+                        <input class = 'btn btn-primary' type="submit" value="Изменить">
+                    </div>
+                    </form>
+                    <ul class="errorlist mb-1 pb-1">
+                        <li>{{ error }}</li>
+                    </ul>
+                    <div class="d-flex justify-content-center">
+                        <a class = 'btn btn-danger' href="{% url 'account_del' user.id %}">Удалить аккаунт</a>
+                    </div>
+                </div>
             </div>
         </div>
-      </div>
+        <div class="col d-flex justify-content-center  mb-4">
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h3 class="card-title">О нас</h3>
+                    <p class="card-text">Сайт был создан для удобного взаимодействия с работниками и пользователями ЖКХ услуг.</p>
+                    <p class="card-text">Наш главный офис расположен по адресу: проспект Нурсултана Назарбаева 56. </p>
+                    <p class="card-text">Контактный адрес электронной почты: chek1921@mail.ru</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex justify-content-center mb-4">
+            <div class="card" style = "width: 100%; height: 340px;">
+                <div class="card-body">
+                    <div style="position:relative;overflow:hidden;"><a href="https://yandex.kz/maps/164/karaganda/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Караганда</a><a href="https://yandex.kz/maps/164/karaganda/house/Y0oYdwdkSkUCQFpjfXRweXplYQ==/?ll=73.104661%2C49.818258&utm_medium=mapframe&utm_source=maps&z=17.95" style="color:#eee;font-size:12px;position:absolute;top:14px;">Проспект Нурсултана Назарбаева, 56 — Яндекс Карты</a><iframe src="https://yandex.kz/map-widget/v1/?ll=73.104661%2C49.818258&mode=whatshere&whatshere%5Bpoint%5D=73.104512%2C49.818594&whatshere%5Bzoom%5D=17&z=17.95" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div> 
     
 {% endblock %}

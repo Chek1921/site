@@ -4,9 +4,23 @@
 
 <div class="container">
     {%if user.allows == '2'%}
-    <a href="{%url 'create_rate'%}">Создать тариф</a>
+    <div class="d-flex justify-content-center flex-column mb-3 mt-3">
+        {% if users.exists %}
+        <h1 class = 'text-center'>Пользователи</h1>
+        {%else%}
+        <h1 class = 'text-center'>Нет пользователей по заданным параметрам</h1>
+        {%endif%}
+        <div class="d-flex justify-content-center">
+            <a class = 'btn btn-primary' href="{%url 'create_rate'%}" style = 'border-radius: 5px; width: 300px;'>Создать/изменить тариф</a>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <form class="input-group" style="width: 300px;"> {%csrf_token%}
+                <input name = "search" type="search" class="form-control rounded" placeholder="Название адреса" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </form>
+        </div>
+    </div>
     {% if users.exists %}
-    <h1>Пользователи</h1>
     {% for user in users %}
         <div class="row">
             <div class="col">
@@ -23,9 +37,8 @@
             </div>
         </div>
     {% endfor %}
-    {% else %}
-        <h1>Нет пользователей</h1>
-    {% endif %}
+    {%endif%}
+    <h4 class = "text-center"><a href="{% url 'bills_all' %}">Все пользователи</a></h4>
     {%else%}
     <h1>Отказано в доступе</h1>
     {%endif%}

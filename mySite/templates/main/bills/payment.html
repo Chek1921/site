@@ -1,0 +1,29 @@
+{% extends 'page.html' %}
+
+{% block content %}
+<div class="container">
+    {%if user.address == bill.address %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-md-4">
+            <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
+                <h1>Счет</h1>
+                <hr>
+                <p>Ваш адрес: {{user.address}}</p>
+                <p>Ваш район: {{user.district}}</p>
+                <p>Текущий тариф: {{bill.rate.name}}-{{bill.rate.cost}}</p>
+                <p>Текущий счетчик: {{bill.current_count}}</p>
+                <p>Стоимость: {{bill.cost}} тенге</p>
+                <hr>
+                <form action="" method="post"> {%csrf_token%}
+                    <button class = "btn btn-secondary" type = "submit">Оплатить</button>
+                </form>
+            </div>
+        </div>
+        <div class="col"></div>
+    {% else %}
+        <p>Отказано в доступе</p>
+    {% endif %}
+</div>
+
+{% endblock %}

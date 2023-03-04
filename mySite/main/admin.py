@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Report, Bill, CustomUser, New, District, Bill_name, Bill_rate
+from .models import *
 # Register your models here.
 
 admin.site.register(Report)
@@ -9,3 +9,5 @@ admin.site.register(District)
 admin.site.register(Bill_name)
 admin.site.register(Bill_rate)
 admin.site.register(CustomUser)
+admin.site.register(Payment)
+admin.site.register(ChangeDistict)

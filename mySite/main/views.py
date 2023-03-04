@@ -6,10 +6,12 @@ from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import resolve_url, get_object_or_404
 from django.db.models import Q, Exists
 from django.views.generic.list import ListView
+import datetime
 
 # Create your views here.
 
 def news(request):
+    pay = None
     all_news = New.objects.filter(district = 1).order_by('-time_create')[:3]
     dist_news = None
     reports = None
@@ -17,12 +19,18 @@ def news(request):
         dist_news = New.objects.filter(district = request.user.district).order_by('-time_create')[:3]
         if request.user.allows == '1':
             reports = Report.objects.filter(address = request.user.address, vision = '2').order_by('-time_create')[:3]
+            bills = Bill.objects.filter(address = request.user.address)
+            for bill in bills:
+                if datetime.datetime.date(datetime.datetime.now()) - datetime.datetime.date(bill.time_pay) >= datetime.timedelta(days=1):
+                    # Payment.objects.get(id=1).time_create         |            bill.time_pay
+                    pay = 'Время оплачивать счета'
     
     return render(request, 'main/news.html', {
         'title': 'Новости', 
         'all_news': all_news,
         'dist_news': dist_news,
         'reports': reports,
+        'pay': pay,
         })
 
 def account(request):
@@ -68,9 +76,13 @@ def bill(request, user_id):
         title = "Ваши счета"
     else:
         title = "Счета " + user.address
-    bills = Bill.objects.filter(address = user.address)
+    bills = Bill.objects.filter(address = user.address).order_by('id')
     for el in bills:
+        #Накрутка счетчика
+        el.current_count = round(el.current_count + 10.03, 2)
+        #-----------------
         el.cost = round((el.current_count - el.last_count) * el.rate.cost, 2)
+        el.save()
     rates = Bill_rate.objects.filter(Q(district = 1) | Q(district = user.district))
     for i in range(len(bills)//3+1):
         rows.append('row')
@@ -95,8 +107,51 @@ def bill(request, user_id):
     return render(request, 'main/bills/bill.html', {'title': title, 'bills': bills_m, 'u': user, 'rates': rates, 'rows': rows})
 
 def bills(request):
-    users = CustomUser.objects.filter(district = request.user.district, allows = '1')
+    search = request.GET.get('search')
+    if search:
+        users = CustomUser.objects.filter(address__search = search, district = request.user.district, allows = '1').order_by('address')
+    else:
+        users = None
+    # CustomUser.objects.filter(district = request.user.district, allows = '1').order_by('address')
     return render(request, 'main/bills/bills.html', {'title': 'Счета', 'users': users})
+
+class BillsAll(ListView):
+    model = CustomUser
+    template_name = 'main/bills/bills_all.html'
+    paginate_by = 10 
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Счета'
+        return context
+    
+    def get_queryset(self):
+        return CustomUser.objects.filter(district = self.request.user.district, allows = '1').order_by('address')
+        
+def payment(request, bill_id):
+    bill = Bill.objects.get(id = bill_id)
+    bill.cost = round((bill.current_count - bill.last_count) * bill.rate.cost, 2)
+    bill.save()
+    if request.method == 'POST':
+        form_data = {}
+        form_data['address'] = request.user.address
+        form_data['district'] = request.user.district
+        form_data['name'] = bill.name.name
+        form_data['rate_name'] = bill.rate.name
+        form_data['rate_cost'] = bill.rate.cost
+        form_data['current_count'] = bill.current_count
+        form_data['cost'] = bill.cost
+        form = PaymentForm(form_data)
+        if form.is_valid():
+            pay = form.save()
+            pay.save()
+            bill.time_pay = datetime.datetime.now()
+            bill.current_count = bill.last_count
+            bill.cost = 0
+            bill.save()
+            return redirect('receipts')
+    return render(request, "main/bills/payment.html", {'title': 'Оплата счета', 'bill': bill})
 
 def create_report(request):
     form = ReportForm()
@@ -124,18 +179,22 @@ def create_bill(request):
     if request.method == 'POST':
         form_data = request.POST.copy()
         name = Bill_name.objects.get(id = form_data['name'])
-        form_data['rate'] = name.default_rate
+        print(name.default_rate)
+        form_data['rate'] = Bill_rate.objects.get(id = name.default_rate)
         form_data['address'] = request.user.address
         form_data['last_count'] = form_data['current_count']
         form_data['cost'] = '0'
+        form_data['time_pay'] = datetime.datetime.now()
         form = BillForm(form_data)
         if form.is_valid():
+            print('a')
             form.save()
             return redirect('success')
     return render(request, 'main/bills/create_bill.html', {'title': 'Создание счета', 'form': form})
 
 def create_bill_rate(request):
     form = BillRateForm()
+    rates = Bill_rate.objects.filter(district = request.user.district)
     if request.method == 'POST':
         form_data = request.POST.copy()
         form_data['district'] = request.user.district
@@ -143,7 +202,19 @@ def create_bill_rate(request):
         if form.is_valid():
             form.save()
             return redirect('success')
-    return render(request, 'main/bills/create_rate.html', {'title': 'Создание счета', 'form': form})
+    return render(request, 'main/bills/create_rate.html', {'title': 'Создание счета', 'form': form, 'rates': rates})
+
+def create_bill_rate_del(request, bill_id):
+    if request.user.allows == '2':
+        bill = Bill_rate.objects.get(id = bill_id)
+        bills = Bill.objects.filter(rate = bill)
+        for cbill in bills:
+            cbill.rate = Bill_rate.objects.get(id = cbill.name.default_rate)
+            cbill.save()
+        bill.delete()
+        return redirect("create_rate")
+    else: 
+        return redirect("success")
 
 def create_bill_name(request):
     form = BillNameForm()
@@ -186,7 +257,6 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return resolve_url('news')
-
 
 def registration(request):
     form = NewUserForm()
@@ -266,6 +336,23 @@ class ReportsHistory(ListView):
     def get_queryset(self):
         return Report.objects.filter(district = self.request.user.district, vision = '2')
 
+class Receipts(ListView):
+    model = Payment
+    template_name = 'main/user/receipts.html'
+    paginate_by = 10 
+    context_object_name = 'payments'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Квитанции'
+        return context
+    
+    def get_queryset(self):
+        return Payment.objects.filter(address = self.request.user.address).order_by('-time_create')
+    
+def receipt(request, receipt_id):
+    payment = Payment.objects.get(id = receipt_id)
+    return render(request, 'main/user/receipt.html', {'title': 'Мои жалобы', 'payment': payment})
 
 def my_reports(request):
     reports = Report.objects.filter(address = request.user.address, vision = '2')
@@ -289,8 +376,8 @@ def change_bill_rate(request):
         return redirect('change_bill_rate')
     return render(request, 'main/admin_menu/change_bill_rate.html', {'title': 'Тарифы', 'bill_rates': bill_rates})
 
-def admin_reg_delete(requset, user_id):
-    if requset.user.allows == '3':
+def admin_reg_delete(request, user_id):
+    if request.user.allows == '3':
         user = CustomUser.objects.get(id = user_id)
         user.want_staff = False
         user.save()
@@ -298,16 +385,16 @@ def admin_reg_delete(requset, user_id):
     else: 
         return redirect("news")
     
-def change_district_del(requset, user_id):
-    if requset.user.allows == '2':
+def change_district_del(request, user_id):
+    if request.user.allows == '2':
         user = ChangeDistict.objects.get(id = user_id)
         user.delete()
         return redirect("change_district")
     else: 
         return redirect("news")
 
-def change_district_approve(requset, user_id):
-    if requset.user.allows == '2':
+def change_district_approve(request, user_id):
+    if request.user.allows == '2':
         application = ChangeDistict.objects.get(id = user_id)
         user = CustomUser.objects.get(id = application.user.id)
         reports = Report.objects.filter(address = user.address)
@@ -321,24 +408,24 @@ def change_district_approve(requset, user_id):
     else: 
         return redirect("news")
     
-def new_delete(requset, new_id):
-    if requset.user.allows == '2':
+def new_delete(request, new_id):
+    if request.user.allows == '2':
         new = New.objects.get(id = new_id)
         new.delete()
         return redirect("news")
     else: 
         return redirect("news")
     
-def bill_delete(requset, bill_id):
-    if requset.user.allows == '2':
+def bill_delete(request, bill_id):
+    if request.user.allows == '2':
         bill = Bill.objects.get(id = bill_id)
         bill.delete()
         return redirect("bills")
     else: 
         return redirect("success")
 
-def admin_reg_approve(requset, user_id):
-    if requset.user.allows == '3':
+def admin_reg_approve(request, user_id):
+    if request.user.allows == '3':
         user = CustomUser.objects.get(id = user_id)
         
         user.allows = 2

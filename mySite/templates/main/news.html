@@ -3,6 +3,11 @@
 {% block content %}
 
 <div class="container">
+    {% if pay %}
+    <div class="alert alert-danger" role="alert">
+        <a href="{%url 'bill' user.id%}" class="alert-link">{{pay}}</a>
+    </div>
+    {% endif %}
     {% if user.allows == '1' and reports.exists %}
     <h1>Ответы на ваши жалобы</h1>
     {% for el in reports %} 
@@ -53,7 +58,7 @@
             </div>
         </div>
     {% endfor %}
-    <h4><a href="{% url 'all_news' %}">Все новости</a></h4>
+    <h4 class = mb-4><a href="{% url 'all_news' %}">Все новости</a></h4>
 </div> 
     
 {% endblock %}

@@ -3,18 +3,18 @@
 {% block content %}
 
 <div class="container">
-    {%if user.allows == '2' %}
-    {% if reports.exists%}
-    <h1>Жалобы</h1>
-    {% for el in reports %} 
+    <h1>Пользователи</h1>
+    {% for user in users %} 
         <div class="row">
             <div class="col">
-                <div class="alert bg-info text-white" role="alert">
-                    <h4 class="alert-heading">{{ el.title }}</h4>
-                    <p>{{ el.text|linebreaks|truncatewords:50 }}</p>
+                <div class="alert alert-warning" role="alert">
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="{% url 'report' el.pk %}" class = 'btn btn-light'>Просмотреть</a>
-                        <p class = 'text-right'>{{el.time_create}}</p>
+                        <div>
+                            <h4 class="alert-heading">{{ user.address }}</h4>
+                        </div>
+                        <div>
+                            <a class = 'btn btn-primary mr-3' href="{% url 'bill' user.id %}">Перейти</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,12 +33,6 @@
             {%endfor%}
         </ul>
     </nav>
-    {% else %}
-    <h1>Жалоб нет</h1>
-    {% endif %}
-    <h4 class = mb-4><a href="{% url 'reports' %}">Активные жалобы</a></h4>
-    {%else%}
-    <h1>Отказано в доступе</h1>
-    {%endif%}
-</div>
+</div> 
+    
 {% endblock %}
