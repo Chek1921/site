@@ -19,10 +19,11 @@
             <div class="container p-3 my-3 bg-news news-in" style="border-radius: 5px">
                 <h1>Счет №{{payment.id}}</h1>
                 <hr>
-                <p>Ваш адрес: {{payment.address}}</p>
-                <p>Ваш район: {{payment.district}}</p>
-                <p>Текущий тариф: {{payment.rate_name}}-{{payment.rate_cost}}</p>
-                <p>Текущий счетчик: {{payment.current_count}}</p>
+                <p>Оплата: {{payment.name}}</p>
+                <p>Адрес: {{payment.address}}</p>
+                <p>Район: {{payment.district}}</p>
+                <p>Тариф: {{payment.rate_name}}-{{payment.rate_cost}}</p>
+                <p>Счетчик: {{payment.current_count}}</p>
                 <p>Стоимость: {{payment.cost}} тенге</p>
                 <hr>
                 <img class = 'img-fluid'src="{% static "img/Approved-Green-Stamp-PNG-Photo.png" %}" alt="">

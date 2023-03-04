@@ -133,7 +133,7 @@ def payment(request, bill_id):
     bill = Bill.objects.get(id = bill_id)
     bill.cost = round((bill.current_count - bill.last_count) * bill.rate.cost, 2)
     bill.save()
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.address == bill.address:
         form_data = {}
         form_data['address'] = request.user.address
         form_data['district'] = request.user.district
@@ -205,7 +205,7 @@ def create_bill_rate(request):
     return render(request, 'main/bills/create_rate.html', {'title': 'Создание счета', 'form': form, 'rates': rates})
 
 def create_bill_rate_del(request, bill_id):
-    if request.user.allows == '2':
+    if request.user.allows == '2' or request.user.allows == '3':
         bill = Bill_rate.objects.get(id = bill_id)
         bills = Bill.objects.filter(rate = bill)
         for cbill in bills:
@@ -219,33 +219,33 @@ def create_bill_rate_del(request, bill_id):
 def create_bill_name(request):
     form = BillNameForm()
     rates = Bill_rate.objects.filter(district = 1)
+    names = Bill_name.objects.all()
     if request.method == 'POST':
         form_data = request.POST.copy()
         form_data['default_rate'] = 1
-        bill_name = form_data['name']
         form = BillNameForm(form_data)
         if form.is_valid():
-            form.save()
-            new_bill_name = Bill_name.objects.get(name = bill_name)
+            new_bill_name = form.save()
             new_rate = Bill_rate(name = 'для ' + form_data['name'], cost = 10, district = District.objects.get(id = 1), bill_name = new_bill_name)
             new_rate.save() 
             new_bill_name.default_rate = new_rate.id
             new_bill_name.save()
-            return redirect('success')
-    return render(request, 'main/admin_menu/create_bill_name.html', {'rates': rates, 'title': 'Создание счетчика', 'form': form})
+            return redirect('create_bill_name')
+    return render(request, 'main/admin_menu/create_bill_name.html', {'names': names, 'title': 'Создание счетчика', 'form': form})
 
 
 def success(request):
     return render(request, 'main/success.html', {'title': 'Успех'})
 
 def create_district(request):
+    districts = District.objects.filter(id__gt = 1)
     form = DistrictForm()
     if request.method == 'POST':
         form = DistrictForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('success')
-    return render(request, 'main/admin_menu/create_district.html', {'title': 'Добавление района счетчика', 'form': form})
+            return redirect('create_district')
+    return render(request, 'main/admin_menu/create_district.html', {'title': 'Добавление района счетчика', 'form': form, 'districts': districts})
 
 class CustomLoginView(LoginView):
     template_name='main/reg/login.html'
@@ -405,6 +405,22 @@ def change_district_approve(request, user_id):
         user.save()
         application.delete()
         return redirect("change_district")
+    else: 
+        return redirect("news")
+    
+def bill_name_delete(request, bill_id):
+    if request.user.allows == '3':
+        bill_name = Bill_name.objects.get(id = bill_id)
+        bill_name.delete()
+        return redirect("create_name")
+    else: 
+        return redirect("news")
+    
+def district_delete(request, district_id):
+    if request.user.allows == '3' and district_id != 1:
+        district = District.objects.get(id = district_id)
+        district.delete()
+        return redirect("create_district")
     else: 
         return redirect("news")
     

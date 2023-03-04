@@ -34,6 +34,7 @@ urlpatterns = [
     path('bills/rate/create', views.create_bill_rate, name = 'create_rate'),
     path('bills/rate/create/del/<bill_id>', views.create_bill_rate_del, name = 'create_rate_del'),
     path('bills/name/create', views.create_bill_name, name = 'create_name'),
+    path('bills/name/del/<bill_id>', views.bill_name_delete, name = 'bill_name_del'),
     path('bills/all', views.BillsAll.as_view(), name = 'bills_all'),
 
 
@@ -57,7 +58,8 @@ urlpatterns = [
     path('admin_reg', views.admin_reg, name = 'admin_reg'),
     path('admin_reg_del/<int:user_id>', views.admin_reg_delete, name = 'admin_reg_del'),
     path('admin_reg_aprv/<int:user_id>', views.admin_reg_approve, name = 'admin_reg_aprv'),
-    path('create_district/', views.create_district, name = 'create_district'),
+    path('district/create', views.create_district, name = 'create_district'),
+    path('district/del/<int:district_id>', views.district_delete, name = 'district_del'),
     path('change_bill_rate', views.change_bill_rate, name = 'change_bill_rate'),
 
     #account

@@ -4,6 +4,24 @@
     {%if user.allows == '3' %}
         <div class="container">
             <div class="p-3 my-3 bg-secondary text-white col-sm" style="border-radius: 5px;">
+                {% if names.exists %}
+                <h1>Счета</h1>
+                {% for name in names %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert bg-dark text-white" role="alert">
+                                <h3 class="alert-heading">{{ name.name }}</h3>
+                                <p class = 'mt-3 mb-1'>Значение счетчика - {{ name.unit }}</p>
+                                <a class = 'btn btn-danger ' href="{%url 'bill_name_del' name.id%}"> Удалить </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <h1>Нет счетов</h1>
+                {% endif %}
+            </div>  
+            <div class="p-3 my-3 bg-secondary text-white col-sm" style="border-radius: 5px;">
                 <form method="post"> {% csrf_token %}
                     <div class="form-group">
                         <label for="report_name">Название нового счета</label>

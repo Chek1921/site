@@ -28,7 +28,7 @@ class NewForm(ModelForm):
 class BillForm(ModelForm):
     class Meta:
         model = Bill
-        fields = ["name", "last_count", "current_count", "address", "rate", "cost"]
+        fields = ["name", "last_count", "current_count", "address", "rate", "cost", "time_pay"]
         widgets = {
             "name": Select(attrs = {'class':"form-control"}),
             "current_count": NumberInput(attrs = {'class':"form-control"}),

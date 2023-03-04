@@ -4,6 +4,23 @@
     {%if user.allows == '3' %}
         <div class="container">
             <div class="p-3 my-3 bg-secondary text-white col-sm" style="border-radius: 5px;">
+                {% if districts.exists %}
+                <h1>Районы</h1>
+                {% for district in districts %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert bg-dark text-white" role="alert">
+                                <h3 class="alert-heading">{{ district.district }}</h3>
+                                <a class = 'btn btn-danger ' href="{%url 'district_del' district.id%}"> Удалить </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <h1>Нет раойнов</h1>
+                {% endif %}
+            </div>  
+            <div class="p-3 my-3 bg-secondary text-white col-sm" style="border-radius: 5px;">
                 <form method="post"> {% csrf_token %}
                     <div class="form-group">
                         <label for="report_name">Название нового района</label>

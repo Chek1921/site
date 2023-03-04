@@ -25,11 +25,9 @@
         </div>
     </div>
     {% elif report.vision == '2' %}
-    <div class="container">
         <div class="container p-3 my-3 bg-info text-white" style="border-radius: 5px;  ">
             <h1>Жалоба рассмотрена</h1>
-            </div>
-    </div>
+        </div>
     {% endif %}
 
     {% if user.allows == '2' and report.vision == '1' %}
