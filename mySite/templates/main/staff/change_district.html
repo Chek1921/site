@@ -12,6 +12,7 @@
                 <div class="alert alert-warning" role="alert">
                     <h4 class="alert-heading">{{ user.user.username }}</h4>
                     <p>{{ user.user.email }}</p>
+                    <p>Адрес: {{user.user.address}}</p>
                     <p>{{ user.user.district }} переместить в {{ user.district }}</p>
                     <p class="mt-3">
                         <a class = 'btn btn-primary mr-3' href="{% url 'change_district_del' user.id %}">Удалить</a>

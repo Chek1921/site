@@ -69,8 +69,6 @@ class DistrictForm(ModelForm):
                "district": TextInput(attrs={'class':"form-control"}),
           }
 
-# Create your forms here.
-
 class NewUserForm(UserCreationForm):
 	
 	class Meta:

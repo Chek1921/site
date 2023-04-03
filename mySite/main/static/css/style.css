@@ -22,6 +22,8 @@ h1 {
     list-style-type: none; 
     color: #e66; 
     padding: 10px;
+    margin: 0;
+    padding: 10px 10px 0 10px;
 }
 
 #opt-del>#id_district>option:first-child {

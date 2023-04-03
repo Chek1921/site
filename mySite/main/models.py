@@ -1,39 +1,26 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-
-# Create your models here.
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
     def create_user(self, username, password, **extra_fields):
-        """
-        Create and save a user with the given email and password.
-        """
-        
         user = self.model(username = username, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
     def create_superuser(self, username, password,**extra_fields):
-        """
-        Create and save a SuperUser with the given email and password.
-
-
-        """
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("allows", '3')
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError(_("Superuser must have is_staff=True."))
+            raise ValueError(("Superuser must have is_staff=True."))
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError(_("Superuser must have is_superuser=True."))
+            raise ValueError(("Superuser must have is_superuser=True."))
         return self.create_user(username, password, **extra_fields)
     
 
@@ -53,7 +40,7 @@ class ChangeDistict(models.Model):
 class Payment(models.Model):
     address = models.CharField("Адрес", max_length=100, null=False, blank=False)
     district = models.CharField("Район", max_length=100, null=False, blank=False)
-    name = models.CharField("Район", max_length=100, null=False, blank=False)
+    name = models.CharField("Имя", max_length=100, null=False, blank=False)
     rate_name = models.CharField("Название тарифа", max_length=100, null=False, blank=False)
     rate_cost = models.FloatField('Стоимость тарифа ',  null=False, blank=False)
     current_count = models.FloatField('Нынешнее значение счетчика',  null=False, blank=False)
@@ -85,7 +72,6 @@ class New(models.Model):
     def __str__(self):
         return self.title
 
-
 class Bill(models.Model):
     name = models.ForeignKey('Bill_name', on_delete=models.CASCADE)
     last_count = models.FloatField('Последнее оплаченное значение счетчика', null=False, blank=False)
@@ -97,7 +83,6 @@ class Bill(models.Model):
 
     def __str__(self):
         return self.address
-
 
 class Bill_name(models.Model):
     name = models.CharField("Название", max_length=100, null=False, blank=False)
@@ -115,7 +100,6 @@ class Bill_rate(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class CustomUser(AbstractUser):
     

@@ -4,7 +4,7 @@ from .forms import *
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import resolve_url, get_object_or_404
-from django.db.models import Q, Exists
+from django.db.models import Q
 from django.views.generic.list import ListView
 import datetime
 
@@ -110,6 +110,7 @@ def bills(request):
     search = request.GET.get('search')
     if search:
         users = CustomUser.objects.filter(address__search = search, district = request.user.district, allows = '1').order_by('address')
+        # users = CustomUser.objects.filter(vector_column = search, district = request.user.district, allows = '1').order_by('address')
     else:
         users = None
     # CustomUser.objects.filter(district = request.user.district, allows = '1').order_by('address')
@@ -230,7 +231,7 @@ def create_bill_name(request):
             new_rate.save() 
             new_bill_name.default_rate = new_rate.id
             new_bill_name.save()
-            return redirect('create_bill_name')
+            return redirect('create_name')
     return render(request, 'main/admin_menu/create_bill_name.html', {'names': names, 'title': 'Создание счетчика', 'form': form})
 
 
@@ -262,7 +263,9 @@ def registration(request):
     form = NewUserForm()
     error = ''
     if request.method == "POST":
-        form = NewUserForm(request.POST)
+        form_data = request.POST.copy()
+        form_data['vector_column'] = None
+        form = NewUserForm(form_data)
         if form.is_valid():
             if request.POST['district'] != '1':
                 user = form.save()
