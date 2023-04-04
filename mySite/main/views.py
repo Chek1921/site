@@ -264,7 +264,6 @@ def registration(request):
     error = ''
     if request.method == "POST":
         form_data = request.POST.copy()
-        form_data['vector_column'] = None
         form = NewUserForm(form_data)
         if form.is_valid():
             if request.POST['district'] != '1':

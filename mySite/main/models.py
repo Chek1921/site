@@ -81,8 +81,14 @@ class Bill(models.Model):
     cost = models.FloatField('Для оплаты')
     time_pay = models.DateTimeField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        self.current_count = round(self.current_count, 2)
+        self.cost = round((self.current_count - self.last_count) * self.rate.cost, 2)
+        super(Bill, self).save(*args, **kwargs)
+    
     def __str__(self):
         return self.address
+
 
 class Bill_name(models.Model):
     name = models.CharField("Название", max_length=100, null=False, blank=False)
@@ -100,6 +106,9 @@ class Bill_rate(models.Model):
 
     def __str__(self):
         return self.name
+
+    def __rate__(self):
+        return self.cost
 
 class CustomUser(AbstractUser):
     
