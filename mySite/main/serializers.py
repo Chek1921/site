@@ -1,6 +1,10 @@
+import json
 from rest_framework import serializers
 from .models import *
 from .serializers import *
+from django.contrib.auth.forms import PasswordResetForm
+from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,10 +26,12 @@ class DistrictSerializer(serializers.ModelSerializer):
         model = District
         fields = "__all__"
 
-    def to_representation(self, instance):
-        return instance.__rate__()
-
 class BillNamesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bill_name
+        fields = '__all__'
+
+class BillNamestoBillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill_name
         fields = '__all__'
@@ -42,9 +48,12 @@ class BillRateSerializer(serializers.ModelSerializer):
         return instance.__rate__()
 
 class BillsSerializer(serializers.ModelSerializer):
-    name = BillNamesSerializer()
+    name = BillNamestoBillSerializer()
     rate = BillRateSerializer()
 
     class Meta:
         model = Bill
         fields = "__all__"
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()

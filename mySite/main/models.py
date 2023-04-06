@@ -91,7 +91,7 @@ class Bill(models.Model):
 
 
 class Bill_name(models.Model):
-    name = models.CharField("Название", max_length=100, null=False, blank=False)
+    name = models.CharField("Название", max_length=100, null=False, blank=False, unique=True)
     unit = models.CharField("Единица измерения", max_length=100, null=False, blank=False)
     default_rate = models.SmallIntegerField("Стандартное значение при создании счетичка", null=False, blank=False)
 

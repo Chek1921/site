@@ -7,6 +7,7 @@ from django.shortcuts import resolve_url, get_object_or_404
 from django.db.models import Q
 from django.views.generic.list import ListView
 import datetime
+import logging
 
 # Create your views here.
 
@@ -66,7 +67,6 @@ class AllNews(ListView):
             all_news = New.objects.filter(Q(district = 1) | Q(district = self.request.user.district)).order_by('-time_create')
         else: 
             all_news = New.objects.filter(district = 1).order_by('-time_create')
-        print(all_news)
         return all_news
 
 def bill(request, user_id):
@@ -155,6 +155,8 @@ def payment(request, bill_id):
     return render(request, "main/bills/payment.html", {'title': 'Оплата счета', 'bill': bill})
 
 def create_report(request):
+    logger = logging.getLogger('main')
+    logger.debug('REPORT CREATE')
     form = ReportForm()
     if request.method == 'POST':
         form_data = request.POST.copy()
@@ -167,6 +169,8 @@ def create_report(request):
     return render(request, 'main/user/create_report.html', {'title': 'Создание жалобы', 'form': form})
 
 def create_new(request):
+    logger = logging.getLogger('main')
+    logger.debug('NEW CREATE')
     form = NewForm()
     if request.method == 'POST':
         form = NewForm(request.POST)
@@ -176,11 +180,12 @@ def create_new(request):
     return render(request, 'main/staff/create_new.html', {'title': 'Создание новости', 'form': form})
 
 def create_bill(request):
+    logger = logging.getLogger('main')
+    logger.debug('BILL CREATE')
     form = BillForm()
     if request.method == 'POST':
         form_data = request.POST.copy()
         name = Bill_name.objects.get(id = form_data['name'])
-        print(name.default_rate)
         form_data['rate'] = Bill_rate.objects.get(id = name.default_rate)
         form_data['address'] = request.user.address
         form_data['last_count'] = form_data['current_count']
@@ -188,12 +193,13 @@ def create_bill(request):
         form_data['time_pay'] = datetime.datetime.now()
         form = BillForm(form_data)
         if form.is_valid():
-            print('a')
             form.save()
             return redirect('success')
     return render(request, 'main/bills/create_bill.html', {'title': 'Создание счета', 'form': form})
 
 def create_bill_rate(request):
+    logger = logging.getLogger('main')
+    logger.debug('BILL RATE CREATE')
     form = BillRateForm()
     rates = Bill_rate.objects.filter(district = request.user.district)
     if request.method == 'POST':
@@ -206,6 +212,8 @@ def create_bill_rate(request):
     return render(request, 'main/bills/create_rate.html', {'title': 'Создание счета', 'form': form, 'rates': rates})
 
 def create_bill_rate_del(request, bill_id):
+    logger = logging.getLogger('main')
+    logger.debug('BILL RATE DELETE')
     if request.user.allows == '2' or request.user.allows == '3':
         bill = Bill_rate.objects.get(id = bill_id)
         bills = Bill.objects.filter(rate = bill)
@@ -218,6 +226,8 @@ def create_bill_rate_del(request, bill_id):
         return redirect("success")
 
 def create_bill_name(request):
+    logger = logging.getLogger('main')
+    logger.debug('BILL NAME CREATE')
     form = BillNameForm()
     rates = Bill_rate.objects.filter(district = 1)
     names = Bill_name.objects.all()
@@ -239,6 +249,8 @@ def success(request):
     return render(request, 'main/success.html', {'title': 'Успех'})
 
 def create_district(request):
+    logger = logging.getLogger('main')
+    logger.debug('DISTRICT CREATE')
     districts = District.objects.filter(id__gt = 1)
     form = DistrictForm()
     if request.method == 'POST':
@@ -269,6 +281,8 @@ def registration(request):
             if request.POST['district'] != '1':
                 user = form.save()
                 login(request, user)
+                logger = logging.getLogger('main')
+                logger.debug('USER CREATE')
                 return redirect("success")
             else: 
                 error = 'Выберите район'
@@ -370,6 +384,8 @@ def change_district(request):
     return render(request, 'main/staff/change_district.html', {'title': 'Смена района', 'users': users})
 
 def change_bill_rate(request):
+    logger = logging.getLogger('main')
+    logger.debug('BILL RATE CHANGE')
     bill_rates = Bill_rate.objects.filter(district = 1)
     if request.method == "POST":
         bill_rate = Bill_rate.objects.get(id = request.POST.get("id"))
@@ -411,6 +427,8 @@ def change_district_approve(request, user_id):
         return redirect("news")
     
 def bill_name_delete(request, bill_id):
+    logger = logging.getLogger('main')
+    logger.debug('BILL NAME DELETE')
     if request.user.allows == '3':
         bill_name = Bill_name.objects.get(id = bill_id)
         bill_name.delete()
@@ -419,6 +437,8 @@ def bill_name_delete(request, bill_id):
         return redirect("news")
     
 def district_delete(request, district_id):
+    logger = logging.getLogger('main')
+    logger.debug('DISTRICT DELETE')
     if request.user.allows == '3' and district_id != 1:
         district = District.objects.get(id = district_id)
         district.delete()
@@ -427,6 +447,8 @@ def district_delete(request, district_id):
         return redirect("news")
     
 def new_delete(request, new_id):
+    logger = logging.getLogger('main')
+    logger.debug('NEW DELETE')
     if request.user.allows == '2':
         new = New.objects.get(id = new_id)
         new.delete()
@@ -443,6 +465,8 @@ def bill_delete(request, bill_id):
         return redirect("success")
 
 def admin_reg_approve(request, user_id):
+    logger = logging.getLogger('main')
+    logger.debug('USER IS ADMIN')
     if request.user.allows == '3':
         user = CustomUser.objects.get(id = user_id)
         
@@ -454,6 +478,8 @@ def admin_reg_approve(request, user_id):
         return redirect("news")
     
 def account_del(request, user_id):
+    logger = logging.getLogger('main')
+    logger.debug('USER DELETE')
     if request.user.id == user_id:
         user = CustomUser.objects.get(id = user_id)
         bills = Bill.objects.filter(address = user.address)

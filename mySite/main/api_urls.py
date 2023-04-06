@@ -9,7 +9,9 @@ urlpatterns = [
     path('receipts/', view.ReceiptsView.as_view()),
     path('receipts/<int:pk>/', view.ReceiptView.as_view()),
     path('districts/', view.DistrictView.as_view()),
+    path('bill_names/', view.BillNamesView.as_view()),
     path('registration/', view.RegistrationView.as_view()),
     path('bills/', view.BillsView.as_view()),
     path('pay/', view.PayApi.as_view()),
+    path('forgot_password/', view.ForgotPasswordApi.as_view()),
 ]
