@@ -1,3 +1,8 @@
 *.pyc
+*.env
 
 mySite/media
+
+file.log
+
+db.sqlite3
