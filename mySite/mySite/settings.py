@@ -95,10 +95,10 @@ WSGI_APPLICATION = 'mySite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'newnewdb',
-        'USER': 'postgres',
-        'PASSWORD': 'Qwe123123',
-        'HOST': '127.0.0.1', 
+        'NAME': 'hypfbsnv',
+        'USER': 'hypfbsnv',
+        'PASSWORD': 'rm50Y-5zegRCd9FvUC6Qu4CagQj4XpC4',
+        'HOST': 'snuffleupagus.db.elephantsql.com', 
         'PORT': '5432',
     }
 }

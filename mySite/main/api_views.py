@@ -60,11 +60,14 @@ class ReportsView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.user = request.user
         data = request.data
-        base64_image = request.data['photo']
-        image_data = base64.b64decode(base64_image)
-        image_file = BytesIO(image_data)
-        file_name = f'{datetime.datetime.now()}.jpg'
-        file = InMemoryUploadedFile(image_file, None, file_name, 'image/jpeg', len(image_data), None)
+        if (data['photo'] == None):
+            file = data['photo']
+        else:
+            base64_image = data['photo']
+            image_data = base64.b64decode(base64_image)
+            image_file = BytesIO(image_data)
+            file_name = f'{datetime.datetime.now()}.jpg'
+            file = InMemoryUploadedFile(image_file, None, file_name, 'image/jpeg', len(image_data), None)
         report = Report (
             title = data['title'],
             text = data['text'],

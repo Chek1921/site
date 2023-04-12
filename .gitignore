@@ -1,5 +1,7 @@
 *.pyc
 *.env
+*.rar
+*.zip
 
 mySite/media
 
