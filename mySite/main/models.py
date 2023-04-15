@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password, **extra_fields):
@@ -63,6 +65,22 @@ class Report(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        print(self.vision)
+        if self.vision == '2':
+            print('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+            channel_layer = get_channel_layer()
+            username = CustomUser.objects.get(address = self.address).username
+            async_to_sync(channel_layer.group_send)(
+                'online',
+                {
+                    'type': 'user_commented',
+                    'message': 'На вашу жалобу с названием "' + self.title + '" ответили',
+                    'username': username,
+                }
+            )
+        super(Report, self).save(*args, **kwargs)
 
 class New(models.Model):
     title = models.CharField('Название', max_length=200, null=False, blank=False)

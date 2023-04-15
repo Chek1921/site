@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,6 +58,16 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "main.CustomUser"
+ASGI_APPLICATION = "mySite.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+    'CONFIG': {
+        "hosts": [('192.168.10.118', 8000)],
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -199,31 +210,31 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'file.log',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'main': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-    },
-}
+# LOGGING = {
+    # 'version': 1,
+    # 'disable_existing_loggers': False,
+    # 'handlers': {
+        # 'file': {
+            # 'class': 'logging.FileHandler',
+            # 'filename': 'file.log',
+            # 'formatter': 'verbose',
+        # },
+    # },
+    # 'loggers': {
+        # 'django': {
+            # 'handlers': ['file'],
+            # 'level': 'ERROR',
+            # 'propagate': True,
+        # },
+        # 'main': {
+            # 'handlers': ['file'],
+            # 'level': 'DEBUG',
+            # 'propagate': True,
+        # },
+    # },
+    # 'formatters': {
+        # 'verbose': {
+            # 'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        # },
+    # },
+# }
