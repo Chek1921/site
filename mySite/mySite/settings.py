@@ -160,8 +160,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER')) 
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD')) 
-# EMAIL_HOST_USER = 'I7776455656@gmail.com'
-# EMAIL_HOST_PASSWORD = 'nqeneikumjzsflwp'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Base url to serve media files
